@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-demo-deployment
+  labels:
+    app: kubernetes-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubernetes-demo
+  template:
+    metadata:
+      labels:
+        app: kubernetes-demo
+    spec:
+      containers:
+      - name: kubernetes-demo
+        image: altfatterz/kubernetes-demo:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-demo
+spec:
+  type: NodePort
+  selector:
+    app: kubernetes-demo
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 30001
